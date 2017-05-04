@@ -583,7 +583,7 @@ to navigate to the example or method corresponding to point."
 (defun rspec-targetize-file-name (a-file-name extension)
   "Return A-FILE-NAME but converted into a non-spec file name with EXTENSION."
   (if (string-match "request" a-file-name)
-      (replace-regexp-in-string "request" ""))
+      (replace-regexp-in-string "request" "" a-file-name))
   (concat (file-name-directory a-file-name)
           (rspec-file-name-with-default-extension
            (replace-regexp-in-string "_spec\\.rb" (concat "." extension)
