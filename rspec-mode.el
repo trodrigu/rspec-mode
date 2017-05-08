@@ -522,7 +522,8 @@ to navigate to the example or method corresponding to point."
                            "^\\.\\./"))
           (relative-file-name (if (string-match "controller" a-file-name)
                                   (convert-controller-to-request-name a-file-name)
-                                (file-relative-name a-file-name (rspec-spec-directory a-file-name)))))
+                                (file-relative-name a-file-name (rspec-spec-directory a-file-name))
+                                )))
 
       (rspec-specize-file-name (expand-file-name (replace-regexp-in-string replace-regex "" relative-file-name)
                                                  (rspec-spec-directory a-file-name))))))
@@ -580,14 +581,19 @@ to navigate to the example or method corresponding to point."
    (replace-regexp-in-string "controller" "request" (file-name-nondirectory a-file-name)))
   )
 
+(defun remove-spec-ending (file-path)
+  (replace-regexp-in-string "_spec" "" file-path))
+
 (defun rspec-targetize-file-name (a-file-name extension)
   "Return A-FILE-NAME but converted into a non-spec file name with EXTENSION."
-  (if (string-match "request" a-file-name)
-      (replace-regexp-in-string "request" "" a-file-name))
-  (concat (file-name-directory a-file-name)
-          (rspec-file-name-with-default-extension
-           (replace-regexp-in-string "_spec\\.rb" (concat "." extension)
-                                     (file-name-nondirectory a-file-name)))))
+    (if (string-match "request" a-file-name)
+        (replace-regexp-in-string "request" "controller" (remove-spec-ending a-file-name))
+      (concat (file-name-directory a-file-name)
+              (rspec-file-name-with-default-extension
+               (replace-regexp-in-string "_spec\\.rb" (concat "." extension)
+                                         (file-name-nondirectory a-file-name))))
+        )
+  )
 
 (defun rspec-file-name-with-default-extension (a-file-name)
   "Add .rb file extension to A-FILE-NAME if it does not already have an extension."
