@@ -522,7 +522,7 @@ to navigate to the example or method corresponding to point."
                            "^\\.\\./"))
           (relative-file-name (if (string-match "controller" a-file-name)
                                   (convert-controller-to-request-name a-file-name)
-                                file-relative-name a-file-name (rspec-spec-directory a-file-name))))
+                                (file-relative-name a-file-name (rspec-spec-directory a-file-name)))))
 
       (rspec-specize-file-name (expand-file-name (replace-regexp-in-string replace-regex "" relative-file-name)
                                                  (rspec-spec-directory a-file-name))))))
